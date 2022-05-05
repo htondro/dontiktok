@@ -1,30 +1,97 @@
 <template>
-  <q-page class="row items-center justify-evenly">
+  <q-page class="row items-center justify-center">
+    <div class="col q-pa-md q-gutter-sm">
+      <div class="row items-center justify-center">
+        <div class="col col-md-6 col-xs-12 q-pa-md q-gutter-sm">
+          <h1 class="fit">TikTok Video Downloader</h1>
+        </div>
+      </div>
+      <div class="row items-center justify-center" v-if="!dataLoaded">
+        <div class="col col-md-5 col-xs-12 q-pa-md q-gutter-sm">
+          <transition
+            appear
+            enter-active-class="animated fadeInLeft"
+            leave-active-class="animated fadeOutLeft"
+          >
+            <q-input
+              square
+              color="accent"
+              v-model.trim="url"
+              type="text"
+              :disable="gettingUrlData"
+              :label="$t('url')"
+            >
+              <template v-slot:append>
+                <q-btn
+                  @click="paste"
+                  flat
+                  dense
+                  size="sm"
+                  label="Paste"
+                  icon="assignment"
+                  color="dark"
+                >
+                </q-btn>
+              </template>
+            </q-input>
+          </transition>
+        </div>
+        <div class="col col-md-2 col-xs-12 q-pa-md q-gutter-sm">
+          <transition
+            appear
+            enter-active-class="animated fadeInRight"
+            leave-active-class="animated fadeOutRight"
+          >
+            <q-btn
+              @click="getUrlData"
+              class="full-width"
+              color="accent"
+              icon="search"
+              :label="$t('checkUrl')"
+              :loading="gettingUrlData"
+            />
+          </transition>
+        </div>
+      </div>
+      <div class="row items-center justify-center" v-if="dataLoaded">
+        <div class="col col-md-3 col-xs-12 q-pa-md q-gutter-sm">
+          <transition
+            appear
+            enter-active-class="animated fadeInUpBig"
+            leave-active-class="animated fadeOutUpBig"
+          >
+            <q-card class="my-card">
+              <q-item>
+                <q-item-section avatar>
+                  <q-avatar>
+                    <img :src="data.avatar" />
+                  </q-avatar>
+                </q-item-section>
+
+                <q-item-section>
+                  <q-item-label>{{ data.username }}</q-item-label>
+                </q-item-section>
+              </q-item>
+              <img :src="data.cover" />
+              <q-card-actions>
+                <q-btn
+                  class="full-width"
+                  color="secondary"
+                  :href="data.downloadLink"
+                  >Download</q-btn
+                >
+              </q-card-actions>
+            </q-card>
+          </transition>
+        </div>
+      </div>
+    </div>
     <!-- <example-component
       title="Example component"
       active
       :todos="todos"
       :meta="meta"
     ></example-component> -->
-    <q-input
-      square
-      color="secondary"
-      v-model.trim="url"
-      type="text"
-      :disable="gettingUrlData"
-      :label="$t('url')"
-      :hint="$t('urlHint')"
-    />
-    <q-btn
-      @click="getUrlData"
-      round
-      dense
-      flat
-      color="secondary"
-      icon="search"
-      :loading="gettingUrlData"
-    />
-    {{ data }}
   </q-page>
 </template>
 
@@ -32,28 +99,43 @@
 // import { Todo, Meta } from 'components/models';
 // import ExampleComponent from 'components/ExampleComponent.vue';
 import { defineComponent, ref } from 'vue';
+import clipboard from 'clipboardy';
 import { api } from 'src/boot/axios';
+import { useQuasar } from 'quasar';
+import { setTimeout } from 'timers';
 
 export default defineComponent({
   name: 'IndexPage',
   // components: { ExampleComponent },
   setup() {
+    const $q = useQuasar();
     const url = ref<string>('');
+    const paste = async () => {
+      url.value = await clipboard.read();
+    };
+    const dataLoaded = ref<boolean>(false);
     const gettingUrlData = ref<boolean>(false);
-    const data = ref();
+    const data = ref(null);
     const getUrlData = async () => {
-      gettingUrlData.value = true;
+      dataLoaded.value = false;
       const urlSplit = url.value.split('/');
       const idWithParams = urlSplit[urlSplit.length - 1];
       const id = idWithParams.split('?')[0];
-      let res = await api.post('/', {
-        action: 'getUrlData',
-        id: id,
-      });
-      data.value = res.data;
+      if (urlSplit.length == 6 && parseInt(id)) {
+        gettingUrlData.value = true;
+        let res = await api.post('/', {
+          action: 'getUrlData',
+          id: id,
+        });
+        data.value = res.data;
+        dataLoaded.value = true;
+      } else {
+        url.value = '';
+        $q.notify('Please enter a valid TikTok video url.');
+      }
       gettingUrlData.value = false;
     };
-    return { url, gettingUrlData, data, getUrlData };
+    return { url, dataLoaded, paste, gettingUrlData, data, getUrlData };
     // const todos = ref<Todo[]>([
     //   {
     //     id: 1,

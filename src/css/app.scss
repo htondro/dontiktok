@@ -1,1 +1,15 @@
 // app global css in SCSS form
+body.screen--xs {
+  font-size: 11px;
+}
+body.screen--md {
+  font-size: 14px;
+}
+body.screen--xs h1 {
+  font-size: 2rem;
+  line-height: 2rem;
+}
+body.screen--md h1 {
+  font-size: 3rem;
+  line-height: 3rem;
+}
