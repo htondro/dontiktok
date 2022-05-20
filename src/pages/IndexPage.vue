@@ -64,7 +64,7 @@
               <q-item>
                 <q-item-section avatar>
                   <q-avatar>
-                    <img :src="data.avatar" />
+                    <q-img :src="data.avatar" spinner-color="secondary" />
                   </q-avatar>
                 </q-item-section>
 
@@ -72,7 +72,7 @@
                   <q-item-label>{{ data.username }}</q-item-label>
                 </q-item-section>
               </q-item>
-              <img :src="data.cover" />
+              <q-img :src="data.cover" spinner-color="secondary" />
               <q-card-actions>
                 <q-btn
                   class="full-width"
@@ -102,7 +102,6 @@ import { defineComponent, ref } from 'vue';
 import clipboard from 'clipboardy';
 import { api } from 'src/boot/axios';
 import { useQuasar } from 'quasar';
-import { setTimeout } from 'timers';
 
 export default defineComponent({
   name: 'IndexPage',
