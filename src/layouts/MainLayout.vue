@@ -4,9 +4,11 @@
       <router-view />
     </q-page-container>
 
-    <q-footer bordered class="bg-dark text-grey">
-      <div class="row items-center justify-center small">made with ❤️️</div>
-    </q-footer>
+    <footer>
+      <q-footer bordered class="bg-dark text-grey">
+        <div class="row items-center justify-center small">made with ❤️️</div>
+      </q-footer>
+    </footer>
   </q-layout>
 </template>
 

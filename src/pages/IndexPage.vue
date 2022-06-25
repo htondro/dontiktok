@@ -1,12 +1,12 @@
 <template>
   <q-page class="row items-center justify-center">
     <div class="col q-pa-md q-gutter-sm">
-      <div class="row items-center justify-center">
+      <header class="row items-center justify-center">
         <div class="col col-md-6 col-xs-12 q-pa-md q-gutter-sm">
           <h1 class="fit">TikTok Video Downloader</h1>
         </div>
-      </div>
-      <div class="row items-center justify-center" v-if="!dataLoaded">
+      </header>
+      <section class="row items-center justify-center" v-if="!dataLoaded">
         <div class="col col-md-5 col-xs-12 q-pa-md q-gutter-sm">
           <transition
             appear
@@ -52,8 +52,8 @@
             />
           </transition>
         </div>
-      </div>
-      <div class="row items-center justify-center" v-if="dataLoaded">
+      </section>
+      <section class="row items-center justify-center" v-if="dataLoaded">
         <div class="col col-md-3 col-xs-12 q-pa-md q-gutter-sm">
           <transition
             appear
@@ -67,7 +67,6 @@
                     <q-img :src="data.avatar" spinner-color="secondary" />
                   </q-avatar>
                 </q-item-section>
-
                 <q-item-section>
                   <q-item-label>{{ data.username }}</q-item-label>
                 </q-item-section>
@@ -78,13 +77,102 @@
                   class="full-width"
                   color="secondary"
                   :href="data.downloadLink"
+                  target="_blank"
                   >Download</q-btn
                 >
               </q-card-actions>
             </q-card>
           </transition>
         </div>
-      </div>
+      </section>
+      <section class="row items-center justify-center">
+        <div class="col col-md-6 col-xs-12 q-pa-md q-gutter-sm">
+          <p>
+            TikTok is a short video publishing software that allows you to
+            create and publish short videos of 15 seconds to 1 minute. The
+            creator of this program is Studio Bytedance China, which has
+            released this program in two versions, China and Global. The name of
+            the Chinese version of
+            <a href="https://tiktok.com" rel="nofollow">TikTok</a> is Douyin.
+            TikTok has a wide range of sound and video effects that can be used
+            to create compelling clips.
+          </p>
+          <p>
+            <strong>DonTikTok.com</strong> is a free online platform that helps
+            you to download TikTok videos without watermark and with HD quality.
+            You can use it on desktop PCs, phones (Android, iPhone), tablets
+            (iPad, Android tablets). Go to TikTok app or website, copy a video
+            URL and paste on above field and wait a few seconds and click on
+            download Button. Congratulations, your TikTok video was downloaded
+            so easily.
+          </p>
+        </div>
+      </section>
+      <article class="row items-center justify-center">
+        <div class="col col-md-6 col-xs-12 q-pa-md q-gutter-sm">
+          <h2>How to download TikTok videos?</h2>
+          <p>
+            Dontiktok.com is one of the best download tools from TikTok, to use
+            this downloader, you don’t need to install software on your mobile
+            phone, computer or tablet, all you have to do is have the TikTok
+            video link. After the process is done by dontiktok.com, you are only
+            one click away from downloading the video.
+          </p>
+          <h2>How download TikTok video without watermark?</h2>
+          <p>
+            Dontiktok.com download TikTok videos very fast and easy with no
+            watermark and HD quality.
+          </p>
+          <h2>How to download TikTok videos on desktop PC?</h2>
+          <p>With dontiktok.com you can download TikTok videos with PC.</p>
+          <ul>
+            <li>
+              Go to TikTok in your chrome or any browser you like login to your
+              account and find your target video
+            </li>
+            <li>Tap on video and copy its URL.</li>
+            <li>Past URL to dontiktok downloader field.</li>
+          </ul>
+          <h2>How to download TikTok videos on Android smartphones?</h2>
+          <p>
+            With dontiktok.com you can download TikTok videos on Android phones.
+          </p>
+          <ul>
+            <li>
+              Go to TikTok App or website on your phone and find your video.
+            </li>
+            <li>Tap on share button and click on the copy link.</li>
+            <li>Paste URL to dontiktok downloader fields</li>
+          </ul>
+          <h2>How to download TikTok videos on Android Tablets?</h2>
+          <p>
+            With dontiktok.com you can download TikTok videos on Android
+            Tablets.
+          </p>
+          <ul>
+            <li>
+              Go to TikTok App or website on your Tablet and find your video.
+            </li>
+            <li>Tap on share button and click on the copy link.</li>
+            <li>Paste URL to dontiktok downloader fields</li>
+          </ul>
+          <h2>Where are the download videos?</h2>
+          <p>
+            Your video downloaded into the default folder set by your browser.
+          </p>
+          <h2>How do I install TikTok app?</h2>
+          <p>
+            You can download the TikTok app from Google Play. But you should
+            note that access to this app is limited in some parts of the world.
+            Download TikTok
+          </p>
+          <h2>Can I share TikTok videos on Instagram?</h2>
+          <p>
+            If you want to publish interesting videos of TikTok to your
+            Instagram, you must first download these videos from TikTok.
+          </p>
+        </div>
+      </article>
     </div>
     <!-- <example-component
       title="Example component"
@@ -101,7 +189,7 @@
 import { defineComponent, ref } from 'vue';
 import clipboard from 'clipboardy';
 import { api } from 'src/boot/axios';
-import { useQuasar } from 'quasar';
+import { useQuasar, exportFile, uid } from 'quasar';
 
 export default defineComponent({
   name: 'IndexPage',
@@ -134,7 +222,14 @@ export default defineComponent({
       }
       gettingUrlData.value = false;
     };
-    return { url, dataLoaded, paste, gettingUrlData, data, getUrlData };
+    return {
+      url,
+      dataLoaded,
+      paste,
+      gettingUrlData,
+      data,
+      getUrlData,
+    };
     // const todos = ref<Todo[]>([
     //   {
     //     id: 1,
